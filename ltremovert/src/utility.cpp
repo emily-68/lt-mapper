@@ -139,23 +139,9 @@ std::pair<cv::Mat, cv::Mat> map2RangeImg(const pcl::PointCloud<PointType>::Ptr &
     }
 
     return std::pair<cv::Mat, cv::Mat>(rimg, rimg_ptidx);
-} // map2RangeImg
+}
 
-// void octreeDownsampling(const pcl::PointCloud<PointType>::Ptr &_src, pcl::PointCloud<PointType>::Ptr &_to_save)
-// {
-//     pcl::octree::OctreePointCloudVoxelCentroid<PointType> octree(kDownsampleVoxelSize);
-//     octree.setInputCloud(_src);
-//     octree.defineBoundingBox();
-//     octree.addPointsFromInputCloud();
-//     pcl::octree::OctreePointCloudVoxelCentroid<PointType>::AlignedPointTVector centroids;
-//     octree.getVoxelCentroids(centroids);
 
-//     // init current map with the downsampled full cloud
-//     _to_save->points.assign(centroids.begin(), centroids.end());
-//     _to_save->width = 1;
-//     _to_save->height = _to_save->points.size(); // make sure again the format of the downsampled point cloud
-//     ROS_INFO_STREAM("\033[1;32m Octree Downsampled pointcloud have: " << _to_save->points.size() << " points.\033[0m");
-// } // octreeDownsampling
 
 pcl::PointCloud<PointType>::Ptr local2global(const pcl::PointCloud<PointType>::Ptr &_scan_local, 
                                 const Eigen::Matrix4d &_scan_pose, const Eigen::Matrix4d &_lidar2base)
@@ -189,7 +175,7 @@ pcl::PointCloud<PointType>::Ptr mergeScansWithinGlobalCoordUtil(
     }
 
     return ptcloud_merged;
-} // mergeScansWithinGlobalCoord
+} 
 
 pcl::PointCloud<PointType>::Ptr global2local(const pcl::PointCloud<PointType>::Ptr &_scan_global, 
                                 const Eigen::Matrix4d &_scan_pose_inverse, const Eigen::Matrix4d &_base2lidar)
@@ -216,7 +202,7 @@ void octreeDownsampling(const pcl::PointCloud<PointType>::Ptr &_src,
     _to_save->points.assign(centroids.begin(), centroids.end());
     _to_save->width = 1;
     _to_save->height = _to_save->points.size(); // make sure again the format of the downsampled point cloud
-} // octreeDownsampling
+}
 
 
 std::pair<int, int> resetRimgSize(const std::pair<float, float> _fov, const float _resize_ratio)
@@ -253,7 +239,7 @@ void pubRangeImg(cv::Mat& _rimg,
     cv::Mat scan_rimg_viz = convertColorMappedImg(_rimg, _caxis);
     _msg = cvmat2msg(scan_rimg_viz);
     _publiser.publish(_msg);    
-} // pubRangeImg
+} 
 
 
 sensor_msgs::ImagePtr cvmat2msg(const cv::Mat &_img)
@@ -270,7 +256,7 @@ void publishPointcloud2FromPCLptr(const ros::Publisher& _scan_publisher, const p
     tempCloud.header.stamp = ros::Time::now();
     tempCloud.header.frame_id = "removert";
     _scan_publisher.publish(tempCloud);
-} // publishPointcloud2FromPCLptr
+}
 
 
 sensor_msgs::PointCloud2 publishCloud(ros::Publisher *thisPub, pcl::PointCloud<PointType>::Ptr thisCloud, ros::Time thisStamp, std::string thisFrame)
